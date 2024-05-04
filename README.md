@@ -1,6 +1,6 @@
 # Arduino Playground
 
-### This repo is a playground and a "throw it in that one" repo for my Arduino projects written entirely in C. I will archive whatever I end up writing in this repo both in its own repo (if I deem it worthy) and compressed in this repo.
+#### This repo is a playground and a "throw it in that one" repo for my Arduino projects written entirely in C. I will archive whatever I end up writing in this repo both in its own repo (if I deem it worthy) and compressed in this repo.
 
 ## Current Project: LCD Ultrasonic Distance Display
 
