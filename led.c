@@ -14,18 +14,18 @@
 #define lcdD6       PORTD3
 #define lcdD7       PORTD3
 
-#define DIRlcdE     DDRB3
-#define DIRlcdRW		DDRD0
-#define DIRlcdRS    DDRB4
-#define DIRlcdD4    DDRD5
-#define DIRlcdD5    DDRD4
-#define DIRlcdD6    DDRD3
-#define DIRlcdD7    DDRD3
+#define DIRlcdE     DDRB
+#define DIRlcdRW		DDRD
+#define DIRlcdRS    DDRB
+#define DIRlcdD4    DDRD
+#define DIRlcdD5    DDRD
+#define DIRlcdD6    DDRD
+#define DIRlcdD7    DDRD
 
 
 int main(void) {
 
-
+	DIRlcdE |= _BV(lcdE);
 
 	while(1) {
 
