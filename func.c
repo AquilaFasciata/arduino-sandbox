@@ -56,9 +56,11 @@ void lcd_data_write(uint8_t data) {
 
   for (int j = 0; j < sizeof(nibble) / sizeof(sizeof(nibble[0])); j++) {
     if (nibble[j] == 1) {
-      mask &= _BV(pin[j]);
+      mask |= _BV(pin[j]);
     }
   }
+  
+  PORTlcdRW &= ~(_BV(PINlcdRW));
 }
 
 void initLcd() {
