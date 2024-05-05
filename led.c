@@ -4,7 +4,7 @@
 #include "func.h"
 
 // Reg Sel  Pin 12
-// RW				Pin 0
+// RW				Pin 8
 // Enable   Pin 11
 // Data 4-7 Pin 5-2
 // RW H Read L Write
