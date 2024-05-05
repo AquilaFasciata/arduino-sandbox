@@ -1,3 +1,4 @@
+#include <util/delay.h>
 #include "pindefines.h"
 #include "func.h"
 
@@ -26,4 +27,52 @@ AVAILABLE isLcdBusy() {
 		return BUSY;
 	}
 	return FREE;
+}
+
+void busyWait()
+{
+  AVAILABLE processing = isLcdBusy();
+  while (processing == BUSY)
+  {
+    _delay_us(1);
+    processing = isLcdBusy();
+  }
+}
+
+void initLcd() {
+  _delay_ms(30);
+  DIRlcdE   |= _BV(PINlcdE);
+// Init round 1
+  PORTlcdE  |= _BV(PINlcdE);
+  _delay_us(1);
+  PORTlcdD5 |= _BV(PINlcdD5);
+  PORTlcdD4 |= _BV(PINlcdD4);
+  _delay_us(1);
+  PORTlcdE  &= ~(_BV(PINlcdE));
+  PORTlcdD5 &= ~(_BV(PINlcdD5));
+  PORTlcdD4 &= ~(_BV(PINlcdD4));
+  _delay_ms(4.2);
+// Init round 2
+  PORTlcdE  |= _BV(PINlcdE);
+  _delay_us(1);
+  PORTlcdD5 |= _BV(PINlcdD5);
+  PORTlcdD4 |= _BV(PINlcdD4);
+  _delay_us(1);
+  PORTlcdE  &= ~(_BV(PINlcdE));
+  PORTlcdD5 &= ~(_BV(PINlcdD5));
+  PORTlcdD4 &= ~(_BV(PINlcdD4));
+// Actually init and configure
+  busyWait();
+  
+  PORTlcdE  |= _BV(PINlcdE);
+  _delay_us(1);
+  PORTlcdD5 |= _BV(PINlcdD5);
+  PORTlcdD4 |= _BV(PINlcdD4);
+  _delay_us(1);
+  PORTlcdE  &= ~(_BV(PINlcdE));
+  PORTlcdD5 &= ~(_BV(PINlcdD5));
+  PORTlcdD4 &= ~(_BV(PINlcdD4));
+  busyWait();
+
+  
 }

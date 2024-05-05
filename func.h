@@ -4,3 +4,5 @@ typedef enum {
 } AVAILABLE;
 
 AVAILABLE isLcdBusy();
+
+void busyWait();
