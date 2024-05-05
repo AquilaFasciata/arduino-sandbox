@@ -15,6 +15,7 @@
 #define DIRlcdD5    	DDRD
 #define DIRlcdD6    	DDRD
 #define DIRlcdD7    	DDRD
+#define DIRlcdDATA    DDRD
 
 #define PORTlcdE    	PORTB
 #define PORTlcdRW			PORTB
