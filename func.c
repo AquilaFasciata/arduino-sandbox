@@ -40,10 +40,25 @@ void busyWait()
 }
 
 void lcd_data_write(uint8_t data) {
-  uint8_t  
-  DIRlcdDATA = 0b00111100;
+//                     D7 D6 D5 D4
+  uint8_t nibble[4] = { 0, 0, 0, 0};
+  int     pin[]   = {PINlcdD7, PINlcdD6, PINlcdD5, PINlcdD4};
+  uint8_t mask = 0b00000000;
+  DIRlcdDATA = 0b00000000;
+  
+  int i = 0;
+  for ( /* i declared */ ; i < sizeof(uint8_t) / 2; i++) {
+    uint8_t compare = (1 << i);
+    if (compare & data) {
+      nibble[i] = 1;
+    }
+  }
 
-
+  for (int j = 0; j < sizeof(nibble) / sizeof(sizeof(nibble[0])); j++) {
+    if (nibble[j] == 1) {
+      mask &= _BV(pin[j]);
+    }
+  }
 }
 
 void initLcd() {
