@@ -24,6 +24,7 @@
 #define PORTlcdD5   	PORTD
 #define PORTlcdD6   	PORTD
 #define PORTlcdD7   	PORTD
+#define PORTlcdDATA   PORTD
 
 #define READlcdE      PINB
 #define READlcdRW			PINB
