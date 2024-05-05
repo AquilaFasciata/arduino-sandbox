@@ -39,6 +39,13 @@ void busyWait()
   }
 }
 
+void lcd_data_write(uint8_t data) {
+  uint8_t  
+  DIRlcdDATA = 0b00111100;
+
+
+}
+
 void initLcd() {
   _delay_ms(30);
   DIRlcdE   |= _BV(PINlcdE);
@@ -61,7 +68,7 @@ void initLcd() {
   PORTlcdE  &= ~(_BV(PINlcdE));
   PORTlcdD5 &= ~(_BV(PINlcdD5));
   PORTlcdD4 &= ~(_BV(PINlcdD4));
-// Actually init and configure
+// Configure
   busyWait();
   
   PORTlcdE  |= _BV(PINlcdE);
@@ -74,5 +81,4 @@ void initLcd() {
   PORTlcdD4 &= ~(_BV(PINlcdD4));
   busyWait();
 
-  
 }
