@@ -34,6 +34,6 @@
 #define READlcdD6     PIND
 #define READlcdD7     PIND
 
-#define CLEARlcdD     PORTD = 0b00000000;
-#define SETlcdE       PORTlcdE |= _BV(PINlcdE);
-#define CLEARlcdE     PORTlcdE &= ~(_BV(PINlcdE));
+#define CLEARlcdD     PORTD = 0b00000000
+#define SETlcdE       PORTlcdE |= _BV(PINlcdE)
+#define CLEARlcdE     PORTlcdE &= ~(_BV(PINlcdE))
