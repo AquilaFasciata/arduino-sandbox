@@ -31,6 +31,8 @@
 #define PORTlcdD7   	PORTD
 
 int main(void) {
+	// Delay required to allow LCD controller to get to proper voltage/
+	_delay_ms(500);
 
 	DIRlcdE		|= _BV(PINlcdE);
 	DIRlcdRW	|= _BV(PINlcdRW);
