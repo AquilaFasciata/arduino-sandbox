@@ -30,9 +30,31 @@
 #define PORTlcdD6   	PORTD
 #define PORTlcdD7   	PORTD
 
+#define READlcdE      PINB
+#define READlcdRW			PIND
+#define READlcdRS     PINB
+#define READlcdD4     PIND
+#define READlcdD5     PIND
+#define READlcdD6     PIND
+#define READlcdD7     PIND
+
+typedef enum {
+	BUSY,
+	FREE
+} AVAILABLE;
+
+AVAILABLE isLcdBusy() {
+	DIRlcdRW 	|= _BV(PINlcdRW);
+	PORTlcdRW |= _BV(PINlcdRS);
+	DIRlcdD7	&= ~(_BV(PINlcdD7));
+	volatile uint8_t pinValue = READlcdD7	& _BV(PINlcdD7);
+	if (pinValue != 0) {
+		return BUSY;
+	}
+	return FREE;
+}
+
 int main(void) {
-	// Delay required to allow LCD controller to get to proper voltage/
-	_delay_ms(500);
 
 	DIRlcdE		|= _BV(PINlcdE);
 	DIRlcdRW	|= _BV(PINlcdRW);
@@ -43,6 +65,9 @@ int main(void) {
 	DIRlcdD7	|= _BV(PINlcdD7);
 
 	PORTlcdRW	|= _BV(PINlcdRW);
+
+	// Delay required to allow LCD controller to get to proper voltage/
+	_delay_ms(500);
 
 	while(1) {
 
