@@ -22,12 +22,6 @@ int main(void) {
 	// Set RW to read
 	PORTlcdRW	|= _BV(PINlcdRW);
 
-	// Delay required to allow LCD controller to get to proper voltage/
-	_delay_ms(50);
-
-	// LCD INIT
-
-
 	while(1) {
 
 	}
