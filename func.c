@@ -130,12 +130,23 @@ void initLcd() {
 // Configure
   busyWait();
   
-  PORTlcdE |= _BV(PINlcdE);
+  PORTlcdE    |= _BV(PINlcdE);
   PORTlcdDATA |= _BV(PINlcdD5) | _BV(PINlcdD4);
   _delay_us(1);
-  PORTlcdE &= ~(_BV(PINlcdE));
+  PORTlcdE    &= ~(_BV(PINlcdE));
   PORTlcdDATA &= ~(_BV(PINlcdD5) | _BV(PINlcdD4));
 // From here on, each instruction needs 2 write cycles to get 1 byte from 4 wires
-
-
+// Configuration information for these values can be found on the instruction set section
+// of the LCD 1602a datasheet. Datasheet I used: https://t.ly/wD0rJ
+  busyWait();
+  lcdDataWrite(0b00101100, CONTROLLER); // Set controller to 4 bit mode, with 2 lines and 5x10 font
+  busyWait();
+  lcdDataWrite(0b00001000, CONTROLLER); // Set display to off
+  busyWait();
+  lcdDataWrite(0b00000001, CONTROLLER); // Clear display
+  busyWait();
+  lcdDataWrite(0b00000110, CONTROLLER); // Set entry mode
+  busyWait();
+  lcdDataWrite(0b00001110, CONTROLLER); // Set display on, cursor on, cursor blinking
+  busyWait();
 }
