@@ -22,6 +22,8 @@ int main(void) {
 	// Set RW to read
 	PORTlcdRW	|= _BV(PINlcdRW);
 
+  initLcd();
+
 	while(1) {
 
 	}
