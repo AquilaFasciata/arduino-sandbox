@@ -39,7 +39,7 @@ void busyWait()
   }
 }
 
-void lcd_data_write(uint8_t data, REGSEL selregister) {
+void lcdDataWrite(uint8_t data, REGSEL selregister) {
 //                     D7 D6 D5 D4
   uint8_t nibble[4] = { 0, 0, 0, 0};
   int     pin[]   = {PINlcdD7, PINlcdD6, PINlcdD5, PINlcdD4};
@@ -72,6 +72,37 @@ void lcd_data_write(uint8_t data, REGSEL selregister) {
   PORTlcdDATA = mask;
   _delay_us(1);
   
+  UNSETlcdE;
+  PORTlcdRW |= _BV(PINlcdRW);
+
+  for ( /* i declared */ ; i < sizeof(data) / 2; i++) {
+    uint8_t compare = (1 << i);
+    if (compare & data) {
+      nibble[i] = 1;
+    }
+  }
+
+  for (int j = 0; j < sizeof(nibble) / sizeof(sizeof(nibble[0])); j++) {
+    if (nibble[j] == 1) {
+      mask |= _BV(pin[j]);
+    }
+  }
+  
+  PORTlcdRW &= ~(_BV(PINlcdRW));
+  if (selregister == CONTROLLER) {
+    PORTlcdRS &= ~(_BV(PINlcdRS));
+  }
+  else {
+    PORTlcdRS |= _BV(PINlcdRS);
+  }
+  _delay_us(1);
+  SETlcdE;
+  PORTlcdDATA = mask;
+  _delay_us(1);
+  
+  UNSETlcdE;
+  PORTlcdRW |= _BV(PINlcdRW);
+
 }
 
 void initLcd() {
