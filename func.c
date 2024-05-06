@@ -89,12 +89,6 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   }
   
   PORTlcdRW &= ~(_BV(PINlcdRW));
-  if (selregister == CONTROLLER) {
-    PORTlcdRS &= ~(_BV(PINlcdRS));
-  }
-  else {
-    PORTlcdRS |= _BV(PINlcdRS);
-  }
   _delay_us(1);
   SETlcdE;
   PORTlcdDATA = mask;
@@ -102,7 +96,6 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   
   UNSETlcdE;
   PORTlcdRW |= _BV(PINlcdRW);
-
 }
 
 void initLcd() {
@@ -110,7 +103,6 @@ void initLcd() {
   DIRlcdE   |= _BV(PINlcdE);
 // Init round 1
   PORTlcdE  |= _BV(PINlcdE);
-  _delay_us(1);
   PORTlcdD5 |= _BV(PINlcdD5);
   PORTlcdD4 |= _BV(PINlcdD4);
   _delay_us(1);
@@ -120,7 +112,15 @@ void initLcd() {
   _delay_ms(4.2);
 // Init round 2
   PORTlcdE  |= _BV(PINlcdE);
+  PORTlcdD5 |= _BV(PINlcdD5);
+  PORTlcdD4 |= _BV(PINlcdD4);
   _delay_us(1);
+  PORTlcdE  &= ~(_BV(PINlcdE));
+  PORTlcdD5 &= ~(_BV(PINlcdD5));
+  PORTlcdD4 &= ~(_BV(PINlcdD4));
+  _delay_us(100);
+// Init round 3
+  PORTlcdE  |= _BV(PINlcdE);
   PORTlcdD5 |= _BV(PINlcdD5);
   PORTlcdD4 |= _BV(PINlcdD4);
   _delay_us(1);
@@ -133,7 +133,9 @@ void initLcd() {
   PORTlcdE |= _BV(PINlcdE);
   PORTlcdDATA |= _BV(PINlcdD5) | _BV(PINlcdD4);
   _delay_us(1);
-// From here on, each instruciton needs 2 write cycles to get 1 byte from 4 wires
+  PORTlcdE &= ~(_BV(PINlcdE));
+  PORTlcdDATA &= ~(_BV(PINlcdD5) | _BV(PINlcdD4));
+// From here on, each instruction needs 2 write cycles to get 1 byte from 4 wires
 
 
 }
