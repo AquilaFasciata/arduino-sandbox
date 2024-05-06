@@ -130,14 +130,10 @@ void initLcd() {
 // Configure
   busyWait();
   
-  PORTlcdE  |= _BV(PINlcdE);
+  PORTlcdE |= _BV(PINlcdE);
+  PORTlcdDATA |= _BV(PINlcdD5) | _BV(PINlcdD4);
   _delay_us(1);
-  PORTlcdD5 |= _BV(PINlcdD5);
-  PORTlcdD4 |= _BV(PINlcdD4);
-  _delay_us(1);
-  PORTlcdE  &= ~(_BV(PINlcdE));
-  PORTlcdD5 &= ~(_BV(PINlcdD5));
-  PORTlcdD4 &= ~(_BV(PINlcdD4));
-  busyWait();
+// From here on, each instruciton needs 2 write cycles to get 1 byte from 4 wires
+
 
 }
