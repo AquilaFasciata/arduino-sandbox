@@ -11,3 +11,7 @@ typedef enum {
 AVAILABLE isLcdBusy();
 
 void busyWait();
+
+void lcdDataWrite(uint8_t data, REGSEL selregister);
+
+void initLcd();

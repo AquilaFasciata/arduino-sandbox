@@ -36,4 +36,4 @@
 
 #define CLEARlcdD     PORTD = 0b00000000
 #define SETlcdE       PORTlcdE |= _BV(PINlcdE)
-#define CLEARlcdE     PORTlcdE &= ~(_BV(PINlcdE))
+#define UNSETlcdE     PORTlcdE &= ~(_BV(PINlcdE))
