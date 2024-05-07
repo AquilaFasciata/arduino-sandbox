@@ -15,3 +15,5 @@ void busyWait();
 void lcdDataWrite(uint8_t data, REGSEL selregister);
 
 void initLcd();
+
+void ledBlink();

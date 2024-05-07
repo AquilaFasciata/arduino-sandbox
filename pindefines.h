@@ -37,3 +37,5 @@
 #define CLEARlcdD     PORTD = 0b00000000
 #define SETlcdE       PORTlcdE |= _BV(PINlcdE)
 #define UNSETlcdE     PORTlcdE &= ~(_BV(PINlcdE))
+#define ledOn         PORTB |= _BV(PORTB5)
+#define ledOff        PORTB &= ~(_BV(PORTB5))

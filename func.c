@@ -70,10 +70,12 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   _delay_us(1);
   SETlcdE;
   PORTlcdDATA = mask;
+  ledOn;
   _delay_us(1);
   
   UNSETlcdE;
   PORTlcdRW |= _BV(PINlcdRW);
+  ledOff;
 
   for ( /* i declared */ ; i < sizeof(data); i++) {
     uint8_t compare = (1 << i);
@@ -92,10 +94,12 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   _delay_us(1);
   SETlcdE;
   PORTlcdDATA = mask;
-  _delay_us(1);
+  ledOn;
+  _delay_ms(1000);
   
   UNSETlcdE;
   PORTlcdRW |= _BV(PINlcdRW);
+  ledOff;
 }
 
 void initLcd() {
@@ -149,4 +153,10 @@ void initLcd() {
   busyWait();
   lcdDataWrite(0b00001110, CONTROLLER); // Set display on, cursor on, cursor blinking
   busyWait();
+}
+
+void ledBlink() {
+    ledOn;
+    _delay_ms(500);
+    ledOff;
 }

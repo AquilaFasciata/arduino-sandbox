@@ -3,6 +3,8 @@
 #include "pindefines.h"
 #include "func.h"
 
+#define BLINK_DELAY_MS 1000
+
 // Reg Sel  Pin 12
 // RW				Pin 8
 // Enable   Pin 11
@@ -10,7 +12,20 @@
 // RW H Read L Write
 
 
-int main(void) {
+int main() {
+	while(1) {
+//  // turn LED on
+//     PORTB |= 0B100000; // PORTB5
+//     _delay_ms(BLINK_DELAY_MS);
+    
+//     // turn LED off
+//     PORTB &= ~ 0B100000; // PORTB5
+//     _delay_ms(BLINK_DELAY_MS);
+	}
+}
+
+void Init() {
+	DDRB |= _BV(PORTB5); // Builtin LED Direction Register
 	// Set all pins to outputs
 	DIRlcdE		|= _BV(PINlcdE);
 	DIRlcdRW	|= _BV(PINlcdRW);
@@ -22,9 +37,8 @@ int main(void) {
 	// Set RW to read
 	PORTlcdRW	|= _BV(PINlcdRW);
 
-  initLcd();
+  // initLcd();
 
-	while(1) {
-
-	}
+	DDRB |= 0B100000; // PORTB5
+	main();
 }
