@@ -45,6 +45,7 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   int     pin[]   = {PINlcdD7, PINlcdD6, PINlcdD5, PINlcdD4};
   uint8_t mask = 0b00000000;
   DIRlcdDATA = 0b00000000;
+  ledOn;
   
   int i = 0;
   for ( /* i declared */ ; i < sizeof(data) / 2; i++) {
@@ -94,7 +95,6 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   _delay_us(1);
   SETlcdE;
   PORTlcdDATA = mask;
-  ledOn;
   _delay_ms(1000);
   
   UNSETlcdE;
@@ -132,7 +132,7 @@ void initLcd() {
   PORTlcdD5 &= ~(_BV(PINlcdD5));
   PORTlcdD4 &= ~(_BV(PINlcdD4));
 // Configure
-  busyWait();
+  _delay_us(100);
   
   PORTlcdE    |= _BV(PINlcdE);
   PORTlcdDATA |= _BV(PINlcdD5) | _BV(PINlcdD4);
@@ -142,17 +142,17 @@ void initLcd() {
 // From here on, each instruction needs 2 write cycles to get 1 byte from 4 wires
 // Configuration information for these values can be found on the instruction set section
 // of the LCD 1602a datasheet. Datasheet I used: https://t.ly/wD0rJ
-  busyWait();
+  _delay_us(100);
   lcdDataWrite(0b00101100, CONTROLLER); // Set controller to 4 bit mode, with 2 lines and 5x10 font
-  busyWait();
+  _delay_us(100);
   lcdDataWrite(0b00001000, CONTROLLER); // Set display to off
-  busyWait();
+  _delay_us(100);
   lcdDataWrite(0b00000001, CONTROLLER); // Clear display
-  busyWait();
+  _delay_us(100);
   lcdDataWrite(0b00000110, CONTROLLER); // Set entry mode
-  busyWait();
+  _delay_us(100);
   lcdDataWrite(0b00001110, CONTROLLER); // Set display on, cursor on, cursor blinking
-  busyWait();
+  _delay_us(100);
 }
 
 void ledBlink() {
