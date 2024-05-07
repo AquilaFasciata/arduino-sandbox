@@ -75,7 +75,7 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   UNSETlcdE;
   PORTlcdRW |= _BV(PINlcdRW);
 
-  for ( /* i declared */ ; i < sizeof(data) / 2; i++) {
+  for ( /* i declared */ ; i < sizeof(data); i++) {
     uint8_t compare = (1 << i);
     if (compare & data) {
       nibble[i] = 1;
