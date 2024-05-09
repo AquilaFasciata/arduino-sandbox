@@ -13,18 +13,6 @@
 
 
 int main() {
-	while(1) {
-//  // turn LED on
-//     PORTB |= 0B100000; // PORTB5
-//     _delay_ms(BLINK_DELAY_MS);
-    
-//     // turn LED off
-//     PORTB &= ~ 0B100000; // PORTB5
-//     _delay_ms(BLINK_DELAY_MS);
-	}
-}
-
-void Init() {
 	DDRB |= _BV(PORTB5); // Builtin LED Direction Register
 	// Set all pins to outputs
 	DIRlcdE		|= _BV(PINlcdE);
@@ -39,6 +27,14 @@ void Init() {
 
   // initLcd();
 
-	DDRB |= 0B100000; // PORTB5
-	main();
+	DDRB |= 0b100000; // PORTB5
+	while(1) {
+ // turn LED on
+    PORTB |= 0b100000; // PORTB5
+    _delay_ms(BLINK_DELAY_MS);
+    
+    // turn LED off
+    PORTB &= ~ 0b100000; // PORTB5
+    _delay_ms(BLINK_DELAY_MS);
+	}
 }

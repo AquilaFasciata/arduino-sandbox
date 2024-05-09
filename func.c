@@ -14,7 +14,7 @@ AVAILABLE isLcdBusy() {
 	PORTlcdE	|= _BV(PINlcdE); 		// Enable High
 
 	_delay_us(1);
-	volatile uint8_t pinValue = READlcdD7	& _BV(PINlcdD7);
+	volatile uint8_t pinValue = (READlcdD7	& _BV(PINlcdD7));
 	PORTlcdE &= ~(_BV(PINlcdE)); 	// Enable low
 	_delay_us(1);
 		
@@ -44,7 +44,7 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   uint8_t nibble[4] = { 0, 0, 0, 0};
   int     pin[]   = {PINlcdD7, PINlcdD6, PINlcdD5, PINlcdD4};
   uint8_t mask = 0b00000000;
-  DIRlcdDATA = 0b00000000;
+  PORTlcdDATA = 0b00000000;
   ledOn;
   
   int i = 0;
