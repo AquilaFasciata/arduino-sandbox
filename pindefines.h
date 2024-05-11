@@ -6,7 +6,7 @@
 #define PINlcdD4      PORTD5
 #define PINlcdD5      PORTD4
 #define PINlcdD6      PORTD3
-#define PINlcdD7      PORTD3
+#define PINlcdD7      PORTD2
 
 #define DIRlcdE 			DDRB
 #define DIRlcdRW			DDRB
