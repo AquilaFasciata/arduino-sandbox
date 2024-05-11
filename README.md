@@ -26,7 +26,7 @@ make is harder on myself in order to learn properly. This pinoutt may change in 
                                      |                             AREF[ ] |                         |             |                                                                                    
                                      |                              GND[ ] |                         |             |                                                                                    
                                      | [ ]N/C                    SCK/13[ ] |                         |             |                                                                                    
-                                     | [ ]IOREF                 MISO/12[X]---------------------------| RS          |                                                                                    
+                                     | [ ]IOREF                 MISO/12[X]---------------------------- RS          |                                                                                    
                                      | [ ]RST                   MOSI/11[X]+--------------------------+ E           |                                                                                    
                                      | [ ]3V3    +---+               10[ ]~|                         |             |                                                                                    
                                      | [ ]5v    -| A |-               9[ ]~|                         |             |                                                                                    
