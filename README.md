@@ -15,7 +15,7 @@ Currently, I am working on writing a project to display the distance of a *thing
 
 ### Pinout Diagram
 Below is an ASCII pinout of what pin on the Arduino Uno goes to what pin on the LCD screen. NOTE: The pinout doesn't line up well with "tutorial" setups. I did this explicitly to 
-make is harder on myself in order to learn properly. This pinoutt may change in the future (though, it likely won't).
+make is harder on myself in order to learn properly. This pinout may change in the future (though, it likely won't).
 
                                                                   +-----+                                                                                                                               
                                      +----[PWR]-------------------| USB |--+                         .-------------.                                                                                    
