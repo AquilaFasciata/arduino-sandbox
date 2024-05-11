@@ -45,7 +45,6 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   int     pin[]   = {PINlcdD7, PINlcdD6, PINlcdD5, PINlcdD4};
   uint8_t mask = 0b00000000;
   PORTlcdDATA = 0b00000000;
-  ledOn;
   
   int i = 0;
   for ( /* i declared */ ; i < sizeof(data) / 2; i++) {
@@ -101,9 +100,9 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
 }
 
 void initLcd() {
-  _delay_ms(30);
-  DIRlcdE   |= _BV(PINlcdE);
+  PORTlcdE  &= ~(_BV(PINlcdE));
 // Init round 1
+  _delay_ms(30);
   PORTlcdE  |= _BV(PINlcdE);
   PORTlcdD5 |= _BV(PINlcdD5);
   PORTlcdD4 |= _BV(PINlcdD4);
