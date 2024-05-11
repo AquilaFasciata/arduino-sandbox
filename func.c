@@ -40,64 +40,47 @@ void busyWait()
 }
 
 void lcdDataWrite(uint8_t data, REGSEL selregister) {
-//                     D7 D6 D5 D4
-  uint8_t nibble[4] = { 0, 0, 0, 0};
-  int     pin[]   = {PINlcdD7, PINlcdD6, PINlcdD5, PINlcdD4};
-  uint8_t mask = 0b00000000;
-  PORTlcdDATA = 0b00000000;
-  
-  int i = 0;
-  for ( /* i declared */ ; i < sizeof(data) / 2; i++) {
-    uint8_t compare = (1 << i);
-    if (compare & data) {
-      nibble[i] = 1;
+  //                 D7 D6 D5 D4
+  int nibble[]    = { 0, 0, 0, 0};
+  uint8_t port[]  = {PINlcdD7, PINlcdD6, PINlcdD5, PINlcdD4};
+  uint8_t mask1   = 0b00000000;
+  uint8_t mask2   = 0b00000000;
+
+  // Iterate through the each bit of data and add it to the mask if the bit is 1
+  // First half will go to mask1 and second will go to mask2
+  for (int i = 0; i < 8; i++) {
+    if (data & (1 << i)) {
+      if (i < 4) {
+        mask1 |= (1 << i);
+      }
+      else {
+        mask2 |= (1 << (i % 4));
+      }
     }
   }
 
-  for (int j = 0; j < sizeof(nibble) / sizeof(sizeof(nibble[0])); j++) {
-    if (nibble[j] == 1) {
-      mask |= _BV(pin[j]);
-    }
-  }
-  
-  PORTlcdRW &= ~(_BV(PINlcdRW));
+  // Shift masks to match physical bit positions
+  mask1 <<= 2;
+  mask2 <<= 2;
+
+  WRITElcdRW;
   if (selregister == CONTROLLER) {
     PORTlcdRS &= ~(_BV(PINlcdRS));
   }
   else {
     PORTlcdRS |= _BV(PINlcdRS);
   }
-  _delay_us(1);
-  SETlcdE;
-  PORTlcdDATA = mask;
-  _delay_us(1);
-  
-  UNSETlcdE;
-  PORTlcdRW |= _BV(PINlcdRW);
 
-  for ( /* i declared */ ; i < sizeof(data); i++) {
-    uint8_t compare = (1 << i);
-    if (compare & data) {
-      nibble[i] = 1;
-    }
-  }
-
-  for (int j = 0; j < sizeof(nibble) / sizeof(sizeof(nibble[0])); j++) {
-    if (nibble[j] == 1) {
-      mask |= _BV(pin[j]);
-    }
-  }
-  
-  PORTlcdRW &= ~(_BV(PINlcdRW));
-  _delay_us(1);
   SETlcdE;
-  PORTlcdDATA = mask;
-  _delay_ms(1000);
-  
+  PORTlcdDATA = mask1;
+  _delay_us(1);
   UNSETlcdE;
-  PORTlcdRW |= _BV(PINlcdRW);
-  ledOff;
+  _delay_us(0.1);
+  CLEARlcdD;
+  
+  
 }
+
 
 void initLcd() {
   PORTlcdE  &= ~(_BV(PINlcdE));
