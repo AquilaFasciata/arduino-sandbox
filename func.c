@@ -101,55 +101,42 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
 
 void initLcd() {
   PORTlcdE  &= ~(_BV(PINlcdE));
-// Init round 1
-  _delay_ms(30);
-  PORTlcdE  |= _BV(PINlcdE);
-  PORTlcdD5 |= _BV(PINlcdD5);
-  PORTlcdD4 |= _BV(PINlcdD4);
-  _delay_us(1);
-  PORTlcdE  &= ~(_BV(PINlcdE));
-  PORTlcdD5 &= ~(_BV(PINlcdD5));
-  PORTlcdD4 &= ~(_BV(PINlcdD4));
-  _delay_ms(4.2);
-// Init round 2
-  PORTlcdE  |= _BV(PINlcdE);
-  PORTlcdD5 |= _BV(PINlcdD5);
-  PORTlcdD4 |= _BV(PINlcdD4);
-  _delay_us(1);
-  PORTlcdE  &= ~(_BV(PINlcdE));
-  PORTlcdD5 &= ~(_BV(PINlcdD5));
-  PORTlcdD4 &= ~(_BV(PINlcdD4));
+  // Wait 10 ms for LCD power suppy + 15 ms according to DS +
+  // 5 ms as margin for error
+  _delay_ms(10);
+  // Next three sections send 0b0011 three times as per the DS
+  SETlcdE;
+  PORTlcdDATA = 0b00001100;
+  _delay_us(1.5);
+  UNSETlcdE;
+  _delay_us(0.1);
+  CLEARlcdD;
+  _delay_ms(4.5);
+  // Section 2
+  SETlcdE;
+  PORTlcdDATA = 0b00001100;
+  _delay_us(1.5);
+  UNSETlcdE;
+  _delay_us(0.1);
+  CLEARlcdD;
   _delay_us(100);
-// Init round 3
-  PORTlcdE  |= _BV(PINlcdE);
-  PORTlcdD5 |= _BV(PINlcdD5);
-  PORTlcdD4 |= _BV(PINlcdD4);
-  _delay_us(1);
-  PORTlcdE  &= ~(_BV(PINlcdE));
-  PORTlcdD5 &= ~(_BV(PINlcdD5));
-  PORTlcdD4 &= ~(_BV(PINlcdD4));
-// Configure
-  _delay_us(100);
-  
-  PORTlcdE    |= _BV(PINlcdE);
-  PORTlcdDATA |= _BV(PINlcdD5) | _BV(PINlcdD4);
-  _delay_us(1);
-  PORTlcdE    &= ~(_BV(PINlcdE));
-  PORTlcdDATA &= ~(_BV(PINlcdD5) | _BV(PINlcdD4));
-// From here on, each instruction needs 2 write cycles to get 1 byte from 4 wires
-// Configuration information for these values can be found on the instruction set section
-// of the LCD 1602a datasheet. Datasheet I used: https://t.ly/wD0rJ
-  _delay_ms(10000);
-  lcdDataWrite(0b00101100, CONTROLLER); // Set controller to 4 bit mode, with 2 lines and 5x10 font
-  _delay_ms(10000);
-  lcdDataWrite(0b00001000, CONTROLLER); // Set display to off
-  _delay_ms(10000);
-  lcdDataWrite(0b00000001, CONTROLLER); // Clear display
-  _delay_ms(10000);
-  lcdDataWrite(0b00000110, CONTROLLER); // Set entry mode
-  _delay_ms(10000);
-  lcdDataWrite(0b00001110, CONTROLLER); // Set display on, cursor on, cursor blinking
-  _delay_ms(10000);
+  //Section 3
+  SETlcdE;
+  PORTlcdDATA = 0b00001100;
+  _delay_us(1.5);
+  UNSETlcdE;
+  _delay_us(0.1);
+  CLEARlcdD;
+  busyWait();
+  // Now we configure with 0b0011 first
+  SETlcdE;
+  PORTlcdDATA = 0b00001100;
+  _delay_us(1.5);
+  UNSETlcdE;
+  _delay_us(0.1);
+  CLEARlcdD;
+  busyWait();
+
 }
 
 void ledBlink() {
