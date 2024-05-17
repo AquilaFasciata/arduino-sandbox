@@ -40,5 +40,5 @@
 #define ledOn         PORTB |= _BV(PORTB5)
 #define ledOff        PORTB &= ~(_BV(PORTB5))
 
-#define WRITElcdRW    PORTlcdRW &= ~(_BV(PINlcdRW))
-#define READlcdRW     PORTlcdRW |= _BV(PINlcdRW)
+#define SETWRITElcdRW    PORTlcdRW &= ~(_BV(PINlcdRW))
+#define SETREADlcdRW     PORTlcdRW |= _BV(PINlcdRW)
