@@ -30,7 +30,7 @@ make is harder on myself in order to learn properly. This pinout may change in t
  | [ ]RST                   MOSI/11[X]+--------------------------+ E           |                                                                                    
  | [ ]3V3    +---+               10[ ]~|                         |             |                                                                                    
  | [ ]5v    -| A |-               9[ ]~|                         |             |                                                                                    
- | [ ]GND   -| R |-               8[ ] |                         |             |                                                                                    
+ | [ ]GND   -| R |-               8[X]---------------------------- RW          |                                                                                    
  | [ ]GND   -| D |-                    |                         |             |                                                                                    
  | [ ]Vin   -| U |-               7[ ] |                         |             |                                                                                    
  |          -| I |-               6[ ]~|                         |             |                                                                                    
