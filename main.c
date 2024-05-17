@@ -3,7 +3,7 @@
 #include "pindefines.h"
 #include "func.h"
 
-#define BLINK_DELAY_MS 1000
+#define BLINK_DELAY_MS 500
 
 // Reg Sel  Pin 12
 // RW				Pin 8

@@ -41,10 +41,10 @@ void busyWait()
 
 void lcdDataWrite(uint8_t data, REGSEL selregister) {
   //                 D7 D6 D5 D4
-  int nibble[]    = { 0, 0, 0, 0};
-  uint8_t port[]  = {PINlcdD7, PINlcdD6, PINlcdD5, PINlcdD4};
-  uint8_t mask1   = 0b00000000;
-  uint8_t mask2   = 0b00000000;
+  static int nibble[]    = { 0, 0, 0, 0};
+  static uint8_t port[]  = {PINlcdD7, PINlcdD6, PINlcdD5, PINlcdD4};
+  static uint8_t mask1   = 0b00000000;
+  static uint8_t mask2   = 0b00000000;
 
   // Iterate through the each bit of data and add it to the mask if the bit is 1
   // First half will go to mask1 and second will go to mask2
@@ -63,7 +63,7 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   mask1 <<= 2;
   mask2 <<= 2;
 
-  WRITElcdRW;
+  SETWRITElcdRW;
   if (selregister == CONTROLLER) {
     PORTlcdRS &= ~(_BV(PINlcdRS));
   }
@@ -75,10 +75,15 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   PORTlcdDATA = mask1;
   _delay_us(1);
   UNSETlcdE;
-  _delay_us(0.1);
+  _delay_us(1);
   CLEARlcdD;
-  
-  
+  _delay_us(1);
+
+  SETlcdE;
+  PORTlcdDATA = mask2;
+  _delay_us(1);
+  UNSETlcdE;
+  CLEARlcdD;
 }
 
 
