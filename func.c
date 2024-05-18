@@ -31,7 +31,7 @@ AVAILABLE isLcdBusy() {
 
 void busyWait()
 {
-  AVAILABLE processing = isLcdBusy();
+  volatile AVAILABLE processing = isLcdBusy();
   while (processing == BUSY)
   {
     _delay_us(1);
@@ -84,6 +84,7 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   _delay_us(1);
   UNSETlcdE;
   CLEARlcdD;
+  _delay_us(1);
 }
 
 
@@ -125,6 +126,18 @@ void initLcd() {
   CLEARlcdD;
   busyWait();
 
+  lcdDataWrite(0b00101000, CONTROLLER); // Set 4bit length, 2 lines, 5x7
+  // busyWait();
+  _delay_us(50);
+  lcdDataWrite(0b00001000, CONTROLLER); // Display off
+  // busyWait();
+  _delay_us(50);
+  lcdDataWrite(0b00000001, CONTROLLER); // Clear display
+  // busyWait();
+  _delay_us(50);
+  lcdDataWrite(0b00000110, CONTROLLER); // Set entry mode
+  // busyWait();
+  _delay_us(50);
 }
 
 void ledBlink() {

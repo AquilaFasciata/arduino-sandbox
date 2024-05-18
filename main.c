@@ -25,7 +25,7 @@ int main() {
 	// Set RW to read
 	PORTlcdRW	|= _BV(PINlcdRW);
 
-  // initLcd();
+  initLcd();
 
 	DDRB |= 0b100000; // PORTB5
 	while(1) {
