@@ -23,15 +23,14 @@ AVAILABLE isLcdBusy() {
 	PORTlcdE &= ~(_BV(PINlcdE)); 	// Enable Low
 	_delay_us(1);
 
-	if (pinValue != 0) {
-		return BUSY;
-	}
+	if (pinValue != 0) { return BUSY; }
+  SETWRITElcdRW;
 	return FREE;
 }
 
 void busyWait()
 {
-  volatile AVAILABLE processing = isLcdBusy();
+  AVAILABLE processing = isLcdBusy();
   while (processing == BUSY)
   {
     _delay_us(1);
@@ -92,39 +91,39 @@ void initLcd() {
   PORTlcdE  &= ~(_BV(PINlcdE));
   // Wait 10 ms for LCD power suppy + 15 ms according to DS +
   // 5 ms as margin for error
-  _delay_ms(10);
+  _delay_ms(30);
   // Next three sections send 0b0011 three times as per the DS
   SETlcdE;
-  PORTlcdDATA = 0b00001100;
-  _delay_us(1.5);
+  PORTlcdDATA = 0b00110000;
+  _delay_ms(4.5); 
   UNSETlcdE;
-  _delay_us(0.1);
   CLEARlcdD;
-  _delay_ms(4.5);
+  _delay_us(1);
   // Section 2
   SETlcdE;
-  PORTlcdDATA = 0b00001100;
-  _delay_us(1.5);
+  PORTlcdDATA = 0b00110000;
+  _delay_us(10);
   UNSETlcdE;
-  _delay_us(0.1);
   CLEARlcdD;
   _delay_us(100);
   //Section 3
   SETlcdE;
-  PORTlcdDATA = 0b00001100;
+  PORTlcdDATA = 0b00110000;
   _delay_us(1.5);
   UNSETlcdE;
   _delay_us(0.1);
   CLEARlcdD;
-  busyWait();
+  // busyWait();
+  _delay_ms(100);
+  
   // Now we configure with 0b0011 first
   SETlcdE;
-  PORTlcdDATA = 0b00001100;
+  PORTlcdDATA = 0b00110000;
   _delay_us(1.5);
   UNSETlcdE;
   _delay_us(0.1);
   CLEARlcdD;
-  busyWait();
+  // busyWait();
 
   lcdDataWrite(0b00101000, CONTROLLER); // Set 4bit length, 2 lines, 5x7
   // busyWait();
