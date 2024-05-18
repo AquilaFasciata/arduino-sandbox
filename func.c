@@ -39,9 +39,6 @@ void busyWait()
 }
 
 void lcdDataWrite(uint8_t data, REGSEL selregister) {
-  //                 D7 D6 D5 D4
-  static int nibble[]    = { 0, 0, 0, 0};
-  static uint8_t port[]  = {PINlcdD7, PINlcdD6, PINlcdD5, PINlcdD4};
   static uint8_t mask1   = 0b00000000;
   static uint8_t mask2   = 0b00000000;
 
@@ -50,10 +47,10 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   for (int i = 0; i < 8; i++) {
     if (data & (1 << i)) {
       if (i < 4) {
-        mask1 |= (1 << i);
+        mask2 |= (1 << i);
       }
       else {
-        mask2 |= (1 << (i % 4));
+        mask1 |= (1 << (i % 4));
       }
     }
   }
@@ -126,16 +123,16 @@ void initLcd() {
   // busyWait();
 
   lcdDataWrite(0b00101000, CONTROLLER); // Set 4bit length, 2 lines, 5x7
-  // busyWait();
+  busyWait();
   _delay_us(50);
   lcdDataWrite(0b00001000, CONTROLLER); // Display off
-  // busyWait();
+  busyWait();
   _delay_us(50);
   lcdDataWrite(0b00000001, CONTROLLER); // Clear display
-  // busyWait();
+  busyWait();
   _delay_us(50);
   lcdDataWrite(0b00000110, CONTROLLER); // Set entry mode
-  // busyWait();
+  busyWait();
   _delay_us(50);
 }
 
