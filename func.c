@@ -11,7 +11,7 @@ AVAILABLE isLcdBusy() {
 	// Enable pin must be pulsed to get busy flag info
 	PORTlcdE	|= _BV(PINlcdE); 		// Enable High
   _delay_us(1.5);
-  uint8_t pinValue = (PIND & ~(_BV(PINlcdD7)));
+  uint8_t pinValue = (PIND & _BV(PINlcdD7));
   
   UNSETlcdE;
   _delay_us(1);
@@ -34,6 +34,7 @@ void busyWait()
 }
 
 void lcdDataWrite(uint8_t data, REGSEL selregister) {
+  DIRlcdDATA = 0b11111111;
   static uint8_t mask1   = 0b00000000;
   static uint8_t mask2   = 0b00000000;
 
