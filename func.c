@@ -34,7 +34,7 @@ void busyWait()
 }
 
 void lcdDataWrite(uint8_t data, REGSEL selregister) {
-  DIRlcdDATA = 0b11111111;
+  DIRlcdDATA |= 0b00111100;
   static uint8_t mask1   = 0b00000000;
   static uint8_t mask2   = 0b00000000;
 
