@@ -64,7 +64,7 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   }
 
   SETlcdE;
-  PORTlcdDATA = mask1;
+  PORTlcdDATA |= mask1;
   _delay_us(1);
   UNSETlcdE;
   _delay_us(1);
@@ -72,7 +72,7 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   _delay_us(1);
 
   SETlcdE;
-  PORTlcdDATA = mask2;
+  PORTlcdDATA |= mask2;
   _delay_us(1);
   UNSETlcdE;
   CLEARlcdD;
