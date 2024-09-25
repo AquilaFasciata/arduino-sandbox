@@ -1,33 +1,34 @@
-#include <util/delay.h>
-#include "pindefines.h"
 #include "func.h"
+#include "pindefines.h"
+#include <util/delay.h>
 
 AVAILABLE isLcdBusy() {
-	// Set RW pin to indicate READ
+  // Set RW pin to indicate READ
   SETREADlcdRW;
   PORTlcdRS &= ~(_BV(PINlcdRS));
-	DIRlcdD7	&= ~(_BV(PINlcdD7));// Set D7 direction to input
+  DIRlcdD7 &= ~(_BV(PINlcdD7)); // Set D7 direction to input
 
-	// Enable pin must be pulsed to get busy flag info
-	PORTlcdE	|= _BV(PINlcdE); 		// Enable High
+  // Enable pin must be pulsed to get busy flag info
+  PORTlcdE |= _BV(PINlcdE); // Enable High
   _delay_us(1.5);
+
   uint8_t pinValue = (PIND & _BV(PINlcdD7));
-  
+
   UNSETlcdE;
   _delay_us(1);
   SETlcdE;
   _delay_us(1);
   UNSETlcdE;
-  
-  if (!pinValue) { return BUSY; }
-	return FREE;
+
+  if (!pinValue) {
+    return BUSY;
+  }
+  return FREE;
 }
 
-void busyWait()
-{
+void busyWait() {
   AVAILABLE processing = isLcdBusy();
-  while (processing == BUSY)
-  {
+  while (processing == BUSY) {
     _delay_ms(1);
     processing = isLcdBusy();
   }
@@ -35,8 +36,10 @@ void busyWait()
 
 void lcdDataWrite(uint8_t data, REGSEL selregister) {
   DIRlcdDATA |= 0b00111100;
-  static uint8_t mask1   = 0b00000000;
-  static uint8_t mask2   = 0b00000000;
+  uint8_t mask1 = 0b00000000;
+  uint8_t mask2 = 0b00000000;
+  CLEARlcdD;
+  SETWRITElcdRW;
 
   // Iterate through the each bit of data and add it to the mask if the bit is 1
   // First half will go to mask1 and second will go to mask2
@@ -44,8 +47,7 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
     if (data & (1 << i)) {
       if (i < 4) {
         mask2 |= (1 << i);
-      }
-      else {
+      } else {
         mask1 |= (1 << (i % 4));
       }
     }
@@ -55,11 +57,9 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   mask1 <<= 2;
   mask2 <<= 2;
 
-  SETWRITElcdRW;
   if (selregister == CONTROLLER) {
     PORTlcdRS &= ~(_BV(PINlcdRS));
-  }
-  else {
+  } else {
     PORTlcdRS |= _BV(PINlcdRS);
   }
 
@@ -75,20 +75,20 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   PORTlcdDATA |= mask2;
   _delay_us(1);
   UNSETlcdE;
+  _delay_us(1);
   CLEARlcdD;
   _delay_us(1);
 }
 
-
 void initLcd() {
-  PORTlcdE  &= ~(_BV(PINlcdE));
+  PORTlcdE &= ~(_BV(PINlcdE));
   // Wait 10 ms for LCD power suppy + 15 ms according to DS +
   // 5 ms as margin for error
   _delay_ms(30);
   // Next three sections send 0b0011 three times as per the DS
   SETlcdE;
   PORTlcdDATA = 0b00110000;
-  _delay_ms(4.5); 
+  _delay_ms(4.5);
   UNSETlcdE;
   CLEARlcdD;
   _delay_us(1);
@@ -99,7 +99,7 @@ void initLcd() {
   UNSETlcdE;
   CLEARlcdD;
   _delay_us(100);
-  //Section 3
+  // Section 3
   SETlcdE;
   PORTlcdDATA = 0b00110000;
   _delay_us(1.5);
@@ -108,7 +108,7 @@ void initLcd() {
   CLEARlcdD;
   // busyWait();
   _delay_ms(100);
-  
+
   // Now we configure with 0b0011 first
   SETlcdE;
   PORTlcdDATA = 0b00110000;
@@ -117,19 +117,28 @@ void initLcd() {
   _delay_us(0.1);
   CLEARlcdD;
   // busyWait();
+  _delay_us(1);
 
   lcdDataWrite(0b00101000, CONTROLLER); // Set 4bit length, 2 lines, 5x7
-  busyWait();
+                                        // busyWait();
+  _delay_us(1);
   lcdDataWrite(0b00001000, CONTROLLER); // Display off
-  busyWait();
+                                        // busyWait();
+  _delay_us(1);
   lcdDataWrite(0b00000001, CONTROLLER); // Clear display
-  busyWait();
+                                        // busyWait();
+  _delay_us(1);
   lcdDataWrite(0b00000110, CONTROLLER); // Set entry mode
-  busyWait();
+                                        // busyWait();
+  _delay_us(1);
+  lcdDataWrite(0b00001111, CONTROLLER); // Display on, Cursor on, Cursor blink
+                                        // busyWait();
+  _delay_us(1);
+  PORTlcdDATA = 0b00000000;
 }
 
 void ledBlink() {
-    ledOn;
-    _delay_ms(500);
-    ledOff;
+  ledOn;
+  _delay_ms(500);
+  ledOff;
 }

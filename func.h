@@ -1,12 +1,8 @@
-typedef enum {
-	BUSY,
-	FREE
-} AVAILABLE;
+#include <stdint.h>
 
-typedef enum {
-  CONTROLLER,
-  LCDRAM
-} REGSEL;
+typedef enum { BUSY, FREE } AVAILABLE;
+
+typedef enum { CONTROLLER, RAM } REGSEL;
 
 AVAILABLE isLcdBusy();
 
