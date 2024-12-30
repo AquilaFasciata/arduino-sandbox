@@ -1,5 +1,7 @@
 #include "func.h"
 #include "pindefines.h"
+#include "serial.h"
+#include <stdlib.h>
 #include <util/delay.h>
 
 AVAILABLE isLcdBusy() {
@@ -52,6 +54,19 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
       }
     }
   }
+
+  char numstr[8 * sizeof(int) + 1];
+  numstr[8 * sizeof(int)] = '\0';
+  itoa(mask1, numstr, 2);
+  usart_print("Mask 1 is: ");
+  usart_print(numstr);
+  usart_print("\n\r");
+
+  numstr[8 * sizeof(int)] = '\0';
+  itoa(mask2, numstr, 2);
+  usart_print("Mask 2 is: ");
+  usart_print(numstr);
+  usart_print("\n\r");
 
   // Shift masks to match physical bit positions
   mask1 <<= 2;
