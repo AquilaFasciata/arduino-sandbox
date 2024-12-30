@@ -1,15 +1,21 @@
 #include "func.h"
 #include "pindefines.h"
+#include "serial.h"
 #include <avr/io.h>
+#include <avr/sfr_defs.h>
 #include <util/delay.h>
 
-#define BLINK_DELAY_MS 500
+#define BLINK_DELAY_MS 1000
 
 // Reg Sel  Pin 12
 // RW				Pin 8
 // Enable   Pin 11
 // Data 4-7 Pin 5-2
 // RW H Read L Write
+
+#define FOSC 16000000
+#define BAUD 9600
+#define MYUBRR FOSC / 16 / BAUD - 1
 
 int main() {
   DDRB |= _BV(PORTB5); // Builtin LED Direction Register
@@ -24,7 +30,7 @@ int main() {
   // Set RW to read
   PORTlcdRW |= _BV(PINlcdRW);
 
-  initLcd();
+  // initLcd();
   lcdDataWrite(0b01000001, RAM);
   // busyWait();
   _delay_us(5);
@@ -36,13 +42,17 @@ int main() {
   _delay_us(5);
 
   DDRB |= 0b100000; // PORTB5
+  usart_init(MYUBRR);
   while (1) {
     // turn LED on
-    PORTB |= 0b100000; // PORTB5
-    _delay_ms(BLINK_DELAY_MS);
+    // PORTB |= 0b100000; // PORTB5
+    // _delay_ms(BLINK_DELAY_MS);
+    //
+    // // turn LED off
+    // PORTB &= ~0b100000; // PORTB5
+    // _delay_ms(BLINK_DELAY_MS);
 
-    // turn LED off
-    PORTB &= ~0b100000; // PORTB5
-    _delay_ms(BLINK_DELAY_MS);
+    usart_print("Hello, world!\n\r");
+    _delay_ms(500);
   }
 }
