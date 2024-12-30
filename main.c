@@ -32,7 +32,7 @@ int main() {
   PORTlcdRW |= _BV(PINlcdRW);
 
   initLcd();
-  lcdDataWrite(0b00110000, RAM);
+  lcdDataWrite('a', RAM);
   // busyWait();
   _delay_us(5);
   lcdDataWrite(134, RAM);
@@ -51,8 +51,5 @@ int main() {
     // turn LED off
     PORTB &= ~0b100000; // PORTB5
     _delay_ms(BLINK_DELAY_MS);
-
-    usart_print("Hello, world!\n\r");
-    _delay_ms(500);
   }
 }

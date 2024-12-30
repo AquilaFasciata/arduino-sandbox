@@ -43,6 +43,13 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   CLEARlcdD;
   SETWRITElcdRW;
 
+  char numstr[8 * sizeof(int) + 1];
+  numstr[8 * sizeof(int)] = '\0';
+  itoa(data, numstr, 2);
+  usart_print("Intending to write: ");
+  usart_print(numstr);
+  usart_print("\n\r");
+
   // Iterate through the each bit of data and add it to the mask if the bit is 1
   // First half will go to mask1 and second will go to mask2
   for (int i = 0; i < 8; i++) {
@@ -55,7 +62,10 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
     }
   }
 
-  char numstr[8 * sizeof(int) + 1];
+  // Shift masks to match physical bit positions
+  mask1 <<= 2;
+  mask2 <<= 2;
+
   numstr[8 * sizeof(int)] = '\0';
   itoa(mask1, numstr, 2);
   usart_print("Mask 1 is: ");
@@ -67,10 +77,6 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   usart_print("Mask 2 is: ");
   usart_print(numstr);
   usart_print("\n\r");
-
-  // Shift masks to match physical bit positions
-  mask1 <<= 2;
-  mask2 <<= 2;
 
   if (selregister == CONTROLLER) {
     PORTlcdRS &= ~(_BV(PINlcdRS));
@@ -99,7 +105,7 @@ void initLcd() {
   PORTlcdE &= ~(_BV(PINlcdE));
   // Wait 10 ms for LCD power suppy + 15 ms according to DS +
   // 5 ms as margin for error
-  _delay_ms(30);
+  _delay_ms(40);
   // Next three sections send 0b0011 three times as per the DS
   SETlcdE;
   PORTlcdDATA = 0b00110000;
