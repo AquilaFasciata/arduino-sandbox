@@ -1,5 +1,6 @@
 #include "func.h"
 #include "pindefines.h"
+#include "serial.h"
 #include <avr/io.h>
 #include <avr/sfr_defs.h>
 #include <util/delay.h>
@@ -12,19 +13,9 @@
 // Data 4-7 Pin 5-2
 // RW H Read L Write
 
-#define FOSC 16000000UL
-#define BAUD 115200
-#define MYUBRR FOSC / (16 * BAUD) - 1
-
-void usart_init(unsigned int ubrr) {
-  UCSR0C = 0;
-  UBRR0H = (unsigned char)(ubrr >> 8);
-  UBRR0L = (unsigned char)ubrr;
-  // Enable
-  UCSR0B = (1 << RXEN0) | (1 << TXEN0);
-  // 8 bit char; 2 bit stop
-  UCSR0C = (1 << USBS0) | (3 << UCSZ00);
-}
+#define FOSC 16000000
+#define BAUD 9600
+#define MYUBRR FOSC / 16 / BAUD - 1
 
 int main() {
   DDRB |= _BV(PORTB5); // Builtin LED Direction Register
@@ -54,18 +45,14 @@ int main() {
   usart_init(MYUBRR);
   while (1) {
     // turn LED on
-    PORTB |= 0b100000; // PORTB5
-    _delay_ms(BLINK_DELAY_MS);
+    // PORTB |= 0b100000; // PORTB5
+    // _delay_ms(BLINK_DELAY_MS);
+    //
+    // // turn LED off
+    // PORTB &= ~0b100000; // PORTB5
+    // _delay_ms(BLINK_DELAY_MS);
 
-    // turn LED off
-    PORTB &= ~0b100000; // PORTB5
-    _delay_ms(BLINK_DELAY_MS);
-
-    if ((UCSR0A & (1 << RXC0))) {
-      unsigned char data = UDR0;
-      while (!(UCSR0A & (1 << UDRE0))) {
-        UDR0 = data;
-      }
-    }
+    usart_print("Hello, world!\n\r");
+    _delay_ms(500);
   }
 }
