@@ -41,12 +41,12 @@ int main() {
 
   DDRB |= 0b100000; // PORTB5
   while (1) {
-    // turn LED on
-    PORTB |= 0b100000; // PORTB5
-    _delay_ms(BLINK_DELAY_MS);
-
-    // turn LED off
-    PORTB &= ~0b100000; // PORTB5
-    _delay_ms(BLINK_DELAY_MS);
+    unsigned char serial_input;
+    while ((UCSR0A & (1 << RXC0))) {
+      serial_input = UDR0;
+    }
+    while ((UCSR0A & (1 << UDRE0))) {
+      UDR0 = serial_input;
+    }
   }
 }

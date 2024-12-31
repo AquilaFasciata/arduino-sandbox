@@ -20,6 +20,10 @@ void usart_init(unsigned int ubrr) {
 
 void usart_print(char *str) {
   for (int i = 0; i < strlen(str); i++) {
-    usart_transmit(str[i]);
+    if (!(i > 600)) {
+      usart_transmit(str[i]);
+    } else {
+      return;
+    }
   }
 }
