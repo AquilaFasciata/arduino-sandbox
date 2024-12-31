@@ -33,14 +33,11 @@ int main() {
 
   initLcd();
   lcdDataWrite('H', RAM);
-  // busyWait();
-  _delay_us(5);
+  busyWait();
   lcdDataWrite(134, RAM);
-  // busyWait();
-  _delay_us(5);
+  busyWait();
   lcdDataWrite(0b00111110, RAM);
-  // busyWait();
-  _delay_us(5);
+  busyWait();
 
   DDRB |= 0b100000; // PORTB5
   while (1) {
