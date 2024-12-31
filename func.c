@@ -163,3 +163,12 @@ void ledBlink() {
   _delay_ms(500);
   ledOff;
 }
+
+void lcdClear() {
+  lcdDataWrite(1, CONTROLLER);
+  busyWait();
+  lcdDataWrite(1 << 1, CONTROLLER);
+  busyWait();
+}
+
+void lcdPrint(char *str) {}
