@@ -1,44 +1,49 @@
 #include <avr/io.h>
 
-#define PINlcdE       PORTB3
-#define PINlcdRW			PORTB0
-#define PINlcdRS      PORTB4
-#define PINlcdD4      PORTD5
-#define PINlcdD5      PORTD4
-#define PINlcdD6      PORTD3
-#define PINlcdD7      PORTD2
+#define PINlcdE PORTB3
+#define PINlcdRW PORTB0
+#define PINlcdRS PORTB4
+#define PINlcdD4 PORTD5
+#define PINlcdD5 PORTD4
+#define PINlcdD6 PORTD3
+#define PINlcdD7 PORTD2
 
-#define DIRlcdE 			DDRB
-#define DIRlcdRW			DDRB
-#define DIRlcdRS    	DDRB
-#define DIRlcdD4    	DDRD
-#define DIRlcdD5    	DDRD
-#define DIRlcdD6    	DDRD
-#define DIRlcdD7    	DDRD
-#define DIRlcdDATA    DDRD
+#define DIRlcdE DDRB
+#define DIRlcdRW DDRB
+#define DIRlcdRS DDRB
+#define DIRlcdD4 DDRD
+#define DIRlcdD5 DDRD
+#define DIRlcdD6 DDRD
+#define DIRlcdD7 DDRD
+#define DIRlcdDATA DDRD
 
-#define PORTlcdE    	PORTB
-#define PORTlcdRW			PORTB
-#define PORTlcdRS   	PORTB
-#define PORTlcdD4   	PORTD
-#define PORTlcdD5   	PORTD
-#define PORTlcdD6   	PORTD
-#define PORTlcdD7   	PORTD
-#define PORTlcdDATA   PORTD
+#define PORTlcdE PORTB
+#define PORTlcdRW PORTB
+#define PORTlcdRS PORTB
+#define PORTlcdD4 PORTD
+#define PORTlcdD5 PORTD
+#define PORTlcdD6 PORTD
+#define PORTlcdD7 PORTD
+#define PORTlcdDATA PORTD
 
-#define READlcdE      PINB
-#define READlcdRW			PINB
-#define READlcdRS     PINB
-#define READlcdD4     PIND
-#define READlcdD5     PIND
-#define READlcdD6     PIND
-#define READlcdD7     PIND
+#define READlcdE PINB
+#define READlcdRW PINB
+#define READlcdRS PINB
+#define READlcdD4 PIND
+#define READlcdD5 PIND
+#define READlcdD6 PIND
+#define READlcdD7 PIND
 
-#define CLEARlcdD     PORTD = 0b00000000
-#define SETlcdE       PORTlcdE |= _BV(PINlcdE)
-#define UNSETlcdE     PORTlcdE &= ~(_BV(PINlcdE))
-#define ledOn         PORTB |= _BV(PORTB5)
-#define ledOff        PORTB &= ~(_BV(PORTB5))
+#define CLEARlcdD PORTD = 0b00000000
+#define SETlcdE PORTlcdE |= _BV(PINlcdE)
+#define UNSETlcdE PORTlcdE &= ~(_BV(PINlcdE))
+#define ledOn PORTB |= _BV(PORTB5)
+#define ledOff PORTB &= ~(_BV(PORTB5))
 
-#define SETWRITElcdRW    PORTlcdRW &= ~(_BV(PINlcdRW))
-#define SETREADlcdRW     PORTlcdRW |= _BV(PINlcdRW)
+#define SETWRITElcdRW PORTlcdRW &= ~(_BV(PINlcdRW))
+#define SETREADlcdRW PORTlcdRW |= _BV(PINlcdRW)
+
+#define TRIG PORTB0
+#define ECHO PORTB1
+#define TRIGPORT PORTB
+#define ECHOPORT PORTB

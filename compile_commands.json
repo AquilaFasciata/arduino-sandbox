@@ -28,5 +28,35 @@
     "directory": "/home/zach/dev/arduino-sandbox",
     "file": "/home/zach/dev/arduino-sandbox/func.c",
     "output": "/home/zach/dev/arduino-sandbox/func.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/avr-gcc",
+      "-Os",
+      "-DF_CPU=16000000UL",
+      "-mmcu=atmega328p",
+      "-c",
+      "-o",
+      "serial.o",
+      "serial.c"
+    ],
+    "directory": "/home/zach/dev/arduino-sandbox",
+    "file": "/home/zach/dev/arduino-sandbox/serial.c",
+    "output": "/home/zach/dev/arduino-sandbox/serial.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/avr-gcc",
+      "-Os",
+      "-DF_CPU=16000000UL",
+      "-mmcu=atmega328p",
+      "-c",
+      "-o",
+      "sonic.o",
+      "sonic.c"
+    ],
+    "directory": "/home/zach/dev/arduino-sandbox",
+    "file": "/home/zach/dev/arduino-sandbox/sonic.c",
+    "output": "/home/zach/dev/arduino-sandbox/sonic.o"
   }
 ]

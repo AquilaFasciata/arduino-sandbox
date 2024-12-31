@@ -20,7 +20,8 @@
 
 int main() {
   usart_init(MYUBRR);
-  DDRB |= _BV(PORTB5); // Builtin LED Direction Register
+  DDRB |= _BV(PORTB5) | _BV(TRIG); // Builtin LED & Trigger DIR
+  DDRB &= ~(_BV(ECHO));            // Sensor Echo set to input
   // Set all pins to outputs
   DIRlcdE |= _BV(PINlcdE);
   DIRlcdRW |= _BV(PINlcdRW);
