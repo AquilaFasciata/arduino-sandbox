@@ -43,12 +43,12 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   CLEARlcdD;
   SETWRITElcdRW;
 
-  // char numstr[8 * sizeof(int) + 1];
-  // numstr[8 * sizeof(int)] = '\0';
-  // itoa(data, numstr, 2);
-  // usart_print("Intending to write: ");
-  // usart_print(numstr);
-  // usart_print("\n\r");
+  char numstr[8 * sizeof(int) + 1];
+  numstr[8 * sizeof(int)] = '\0';
+  itoa(data, numstr, 2);
+  usart_print("Intending to write: ");
+  usart_print(numstr);
+  usart_print("\n\r");
 
   // Iterate through the each bit of data and add it to the mask if the bit is 1
   // First half will go to mask1 and second will go to mask2
@@ -66,17 +66,17 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   mask1 <<= 2;
   mask2 <<= 2;
 
-  // numstr[8 * sizeof(int)] = '\0';
-  // itoa(mask1, numstr, 2);
-  // usart_print("Mask 1 is: ");
-  // usart_print(numstr);
-  // usart_print("\n\r");
+  numstr[8 * sizeof(int)] = '\0';
+  itoa(mask1, numstr, 2);
+  usart_print("Mask 1 is: ");
+  usart_print(numstr);
+  usart_print("\n\r");
 
-  // numstr[8 * sizeof(int)] = '\0';
-  // itoa(mask2, numstr, 2);
-  // usart_print("Mask 2 is: ");
-  // usart_print(numstr);
-  // usart_print("\n\r");
+  numstr[8 * sizeof(int)] = '\0';
+  itoa(mask2, numstr, 2);
+  usart_print("Mask 2 is: ");
+  usart_print(numstr);
+  usart_print("\n\r");
 
   if (selregister == CONTROLLER) {
     PORTlcdRS &= ~(_BV(PINlcdRS));
