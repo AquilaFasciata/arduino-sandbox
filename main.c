@@ -3,6 +3,7 @@
 #include "serial.h"
 #include <avr/io.h>
 #include <avr/sfr_defs.h>
+#include <stdlib.h>
 #include <util/delay.h>
 
 #define BLINK_DELAY_MS 1000
@@ -43,8 +44,26 @@ int main() {
   while (1) {
     unsigned char serial_input;
     while ((UCSR0A & (1 << RXC0))) {
-      lcdDataWrite(UDR0, RAM);
-      busyWait();
+      serial_input = UDR0;
+
+      switch (serial_input) {
+      case ':':
+        lcdDataWrite(1, CONTROLLER);
+        busyWait();
+        break;
+      case 'h':
+        lcdShiftCursor(1, LEFT);
+        busyWait();
+        break;
+      case 'l':
+        lcdShiftCursor(2, RIGHT);
+        busyWait();
+        break;
+      default:
+        lcdDataWrite(serial_input, RAM);
+        busyWait();
+        break;
+      }
     }
   }
 }

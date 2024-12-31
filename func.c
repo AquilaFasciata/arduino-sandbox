@@ -19,19 +19,22 @@ AVAILABLE isLcdBusy() {
   UNSETlcdE;
   _delay_us(1);
   SETlcdE;
-  _delay_us(1);
+  _delay_us(3);
   UNSETlcdE;
+  _delay_us(800);
 
   if (!pinValue) {
+    // usart_print("Busy!\n\r");
     return BUSY;
   }
+  // usart_print("Free!\n\r");
   return FREE;
 }
 
 void busyWait() {
   AVAILABLE processing = isLcdBusy();
   while (processing == BUSY) {
-    _delay_ms(1);
+    _delay_us(1);
     processing = isLcdBusy();
   }
 }
@@ -43,12 +46,12 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   CLEARlcdD;
   SETWRITElcdRW;
 
-  char numstr[8 * sizeof(int) + 1];
-  numstr[8 * sizeof(int)] = '\0';
-  itoa(data, numstr, 2);
-  usart_print("Intending to write: ");
-  usart_print(numstr);
-  usart_print("\n\r");
+  // char numstr[8 * sizeof(int) + 1];
+  // numstr[8 * sizeof(int)] = '\0';
+  // itoa(data, numstr, 2);
+  // usart_print("Intending to write: ");
+  // usart_print(numstr);
+  // usart_print("\n\r");
 
   // Iterate through the each bit of data and add it to the mask if the bit is 1
   // First half will go to mask1 and second will go to mask2
@@ -66,17 +69,17 @@ void lcdDataWrite(uint8_t data, REGSEL selregister) {
   mask1 <<= 2;
   mask2 <<= 2;
 
-  numstr[8 * sizeof(int)] = '\0';
-  itoa(mask1, numstr, 2);
-  usart_print("Mask 1 is: ");
-  usart_print(numstr);
-  usart_print("\n\r");
-
-  numstr[8 * sizeof(int)] = '\0';
-  itoa(mask2, numstr, 2);
-  usart_print("Mask 2 is: ");
-  usart_print(numstr);
-  usart_print("\n\r");
+  // numstr[8 * sizeof(int)] = '\0';
+  // itoa(mask1, numstr, 2);
+  // usart_print("Mask 1 is: ");
+  // usart_print(numstr);
+  // usart_print("\n\r");
+  //
+  // numstr[8 * sizeof(int)] = '\0';
+  // itoa(mask2, numstr, 2);
+  // usart_print("Mask 2 is: ");
+  // usart_print(numstr);
+  // usart_print("\n\r");
 
   if (selregister == CONTROLLER) {
     PORTlcdRS &= ~(_BV(PINlcdRS));
@@ -114,12 +117,12 @@ void initLcd() {
   CLEARlcdD;
   _delay_us(1);
   // Section 2
-  SETlcdE;
   PORTlcdDATA = 0b00110000;
-  _delay_us(10);
+  SETlcdE;
+  _delay_us(101);
   UNSETlcdE;
   CLEARlcdD;
-  _delay_us(100);
+  _delay_us(10);
   // Section 3
   SETlcdE;
   PORTlcdDATA = 0b00110000;
@@ -131,30 +134,23 @@ void initLcd() {
   _delay_ms(100);
 
   // Now we configure with 0b0011 first
-  SETlcdE;
   PORTlcdDATA = 0b00110000;
-  _delay_us(1.5);
-  UNSETlcdE;
-  _delay_us(0.1);
-  CLEARlcdD;
-  // busyWait();
+  SETlcdE;
   _delay_us(1);
+  UNSETlcdE;
+  CLEARlcdD;
+  busyWait();
 
   lcdDataWrite(0b00101000, CONTROLLER); // Set 4bit length, 2 lines, 5x7
-                                        // busyWait();
-  _delay_us(1);
+  busyWait();
   lcdDataWrite(0b00001000, CONTROLLER); // Display off
-                                        // busyWait();
-  _delay_us(1);
+  busyWait();
   lcdDataWrite(0b00000001, CONTROLLER); // Clear display
-                                        // busyWait();
-  _delay_us(1);
+  busyWait();
   lcdDataWrite(0b00000110, CONTROLLER); // Set entry mode
-                                        // busyWait();
-  _delay_us(1);
+  busyWait();
   lcdDataWrite(0b00001111, CONTROLLER); // Display on, Cursor on, Cursor blink
-                                        // busyWait();
-  _delay_us(1);
+  busyWait();
   PORTlcdDATA = 0b00000000;
 }
 
@@ -171,4 +167,17 @@ void lcdClear() {
   busyWait();
 }
 
-void lcdPrint(char *str) {}
+void lcdShiftCursor(int positions, CURSORDIR direction) {
+  if (direction == LEFT) {
+    positions--;
+  }
+  for (int i = 0; i < positions; i++) {
+    if (direction == RIGHT) {
+      lcdDataWrite(0b00010100, CONTROLLER);
+      busyWait();
+    } else {
+      lcdDataWrite(0b00010000, CONTROLLER);
+      busyWait();
+    }
+  }
+}

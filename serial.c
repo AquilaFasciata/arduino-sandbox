@@ -16,6 +16,7 @@ void usart_init(unsigned int ubrr) {
   UCSR0B = (1 << RXEN0) | (1 << TXEN0);
   // 8 bit char; 2 bit stop
   UCSR0C = (1 << USBS0) | (3 << UCSZ00);
+  UDR0 = 0;
 }
 
 void usart_print(char *str) {
