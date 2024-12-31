@@ -32,21 +32,19 @@ int main() {
   PORTlcdRW |= _BV(PINlcdRW);
 
   initLcd();
-  lcdDataWrite('H', RAM);
-  busyWait();
-  lcdDataWrite(134, RAM);
-  busyWait();
-  lcdDataWrite(0b00111110, RAM);
-  busyWait();
+  // lcdDataWrite('H', RAM);
+  // busyWait();
+  // lcdDataWrite(134, RAM);
+  // busyWait();
+  // lcdDataWrite(0b00111110, RAM);
+  // busyWait();
 
   DDRB |= 0b100000; // PORTB5
   while (1) {
     unsigned char serial_input;
     while ((UCSR0A & (1 << RXC0))) {
-      serial_input = UDR0;
-    }
-    while ((UCSR0A & (1 << UDRE0))) {
-      UDR0 = serial_input;
+      lcdDataWrite(UDR0, RAM);
+      busyWait();
     }
   }
 }
