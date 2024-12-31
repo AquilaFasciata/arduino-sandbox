@@ -32,7 +32,7 @@ int main() {
   PORTlcdRW |= _BV(PINlcdRW);
 
   initLcd();
-  lcdDataWrite('a', RAM);
+  lcdDataWrite('H', RAM);
   // busyWait();
   _delay_us(5);
   lcdDataWrite(134, RAM);
