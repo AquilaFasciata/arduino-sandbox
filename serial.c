@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include <stdlib.h>
 #include <string.h>
 
 void usart_transmit(unsigned char data) {
@@ -27,4 +28,10 @@ void usart_print(char *str) {
       return;
     }
   }
+}
+
+void usart_num_print(int num) {
+  char str[100] = {'\0'};
+  itoa(num, str, 10);
+  usart_print(str);
 }

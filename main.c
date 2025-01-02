@@ -1,6 +1,7 @@
 #include "func.h"
 #include "pindefines.h"
 #include "serial.h"
+#include "sonic.h"
 #include <avr/io.h>
 #include <avr/sfr_defs.h>
 #include <stdlib.h>
@@ -20,8 +21,8 @@
 
 int main() {
   usart_init(MYUBRR);
-  DDRB |= _BV(PORTB5) | _BV(TRIG); // Builtin LED & Trigger DIR
-  DDRB &= ~(_BV(ECHO));            // Sensor Echo set to input
+  sensorInit();
+  DDRB |= _BV(PORTB5); // Builtin LED & Trigger DIR
   // Set all pins to outputs
   DIRlcdE |= _BV(PINlcdE);
   DIRlcdRW |= _BV(PINlcdRW);
@@ -66,5 +67,13 @@ int main() {
         break;
       }
     }
+
+    int distance = sensorGetDistance();
+    char number[10] = {'\0'};
+    itoa(distance, number, 10);
+    usart_print("Distance: ");
+    usart_print(number);
+    usart_print("cm\n\r");
+    _delay_ms(300);
   }
 }

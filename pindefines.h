@@ -47,3 +47,5 @@
 #define ECHO PORTB1
 #define TRIGPORT PORTB
 #define ECHOPORT PORTB
+
+#define FREQ
