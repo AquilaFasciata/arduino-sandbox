@@ -44,7 +44,7 @@ int main() {
   // busyWait();
 
   DDRB |= 0b100000; // PORTB5
-  lcdPrintn("Test", strlen("test"));
+  lcdPrint("Number: ");
   while (1) {
     unsigned char serial_input;
     while ((UCSR0A & (1 << RXC0))) {
@@ -69,6 +69,14 @@ int main() {
         break;
       }
     }
+
+    static int num = 0;
+    num++;
+    char test[4] = {'\0'};
+    itoa(num, test, 10);
+    lcdPrint(test);
+    lcdShiftCursor(strlen(test), LEFT);
+    _delay_ms(1500);
 
     int distance = sensorGetDistance();
     char number[10] = {'\0'};

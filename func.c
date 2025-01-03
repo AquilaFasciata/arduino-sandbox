@@ -150,7 +150,7 @@ void initLcd() {
   busyWait();
   lcdDataWrite(0b00000110, CONTROLLER); // Set entry mode
   busyWait();
-  lcdDataWrite(0b00001111, CONTROLLER); // Display on, Cursor on, Cursor blink
+  lcdDataWrite(0b00001110, CONTROLLER); // Display on, Cursor , Cursor
   busyWait();
   PORTlcdDATA = 0b00000000;
 }
@@ -169,9 +169,6 @@ void lcdClear() {
 }
 
 void lcdShiftCursor(int positions, CURSORDIR direction) {
-  if (direction == LEFT) {
-    positions--;
-  }
   for (int i = 0; i < positions; i++) {
     if (direction == RIGHT) {
       lcdDataWrite(0b00010100, CONTROLLER);
