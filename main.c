@@ -44,7 +44,10 @@ int main() {
   // busyWait();
 
   DDRB |= 0b100000; // PORTB5
-  lcdPrint("Number: ");
+  lcdPrint("Distance: ");
+  int distArr[2] = {0};
+  int arrAccess = 0;
+  static const int distArrLen = sizeof(distArr) / sizeof(distArr[0]);
   while (1) {
     unsigned char serial_input;
     while ((UCSR0A & (1 << RXC0))) {
@@ -70,20 +73,29 @@ int main() {
       }
     }
 
-    static int num = 0;
-    num++;
-    char test[4] = {'\0'};
-    itoa(num, test, 10);
-    lcdPrint(test);
-    lcdShiftCursor(strlen(test), LEFT);
-    _delay_ms(1500);
-
     int distance = sensorGetDistance();
+
+    if (arrAccess++ == distArrLen - 1) {
+      arrAccess = 0;
+    }
+
+    distArr[arrAccess] = distance;
+
+    int distAvg = 0;
+    for (int i = 0; i < distArrLen; i++) {
+      distAvg += distArr[i];
+    }
+    distAvg /= distArrLen;
+
+    usart_print("avg: ");
+    usart_num_print(distAvg);
+    usart_print("\n\r");
+
     char number[10] = {'\0'};
-    itoa(distance, number, 10);
-    usart_print("Distance: ");
-    usart_print(number);
-    usart_print("cm\n\r");
-    _delay_ms(300);
+    itoa(distAvg, number, 10);
+    lcdPrint(number);
+    lcdPrint("cm");
+    lcdShiftCursor(strlen(number) + 2, LEFT);
+    _delay_ms(100);
   }
 }

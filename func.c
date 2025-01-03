@@ -150,7 +150,7 @@ void initLcd() {
   busyWait();
   lcdDataWrite(0b00000110, CONTROLLER); // Set entry mode
   busyWait();
-  lcdDataWrite(0b00001110, CONTROLLER); // Display on, Cursor , Cursor
+  lcdDataWrite(0b00001100, CONTROLLER); // Display on, Cursor , Cursor Blink
   busyWait();
   PORTlcdDATA = 0b00000000;
 }
