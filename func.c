@@ -1,9 +1,10 @@
 #include "func.h"
 #include "pindefines.h"
 #include "serial.h"
+#include <stddef.h>
 #include <util/delay.h>
 
-AVAILABLE isLcdBusy() {
+static AVAILABLE isLcdBusy() {
   // Set RW pin to indicate READ
   SETREADlcdRW;
   PORTlcdRS &= ~(_BV(PINlcdRS));
@@ -178,5 +179,12 @@ void lcdShiftCursor(int positions, CURSORDIR direction) {
       lcdDataWrite(0b00010000, CONTROLLER);
       busyWait();
     }
+  }
+}
+
+void lcdPrintn(char *str, size_t num) {
+  for (int i = 0; i < num; i++) {
+    lcdDataWrite(str[i], RAM);
+    busyWait();
   }
 }
