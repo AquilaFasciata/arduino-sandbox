@@ -1,5 +1,6 @@
 #include "pindefines.h"
 #include "serial.h"
+#include <avr/io.h>
 #include <avr/sfr_defs.h>
 #include <stdint.h>
 #include <util/delay.h>
@@ -16,28 +17,23 @@ void sensorInit() {
   DDRB &= ~(1 << ECHO);
 }
 
-static void sensorTrigger() {
-  usart_print("Triggering!");
-  TRIGPORT |= _BV(TRIG);
-  _delay_us(11);
-  TRIGPORT &= ~(_BV(TRIG));
-  usart_print("Untriggered!");
-}
-
 // Must wait 10mS between distance checks
 int sensorGetDistance() {
-  TCNT1 = 0;
-  sensorTrigger();
+  TRIGPORT |= _BV(TRIG);
+
+  _delay_us(10);
+  int num_loops = 0;
+
+  TRIGPORT &= ~(_BV(TRIG));
+  usart_print("Letting previous finish before measuring");
+  while ((ECHOPORT & (1 << ECHO)))
+    ;
   while (!(ECHOPORT & (1 << ECHO)))
     ;
   TCNT1 = 0;
-  while (ECHOPORT & (1 << ECHO)) { // Wait for the echo pin to go low
+  while ((ECHOPORT & (1 << ECHO))) { // Wait for the echo pin to go low
     usart_print("Waiting\n\r");
-    // if (TCNT1 > 30000) {
-    //   break; // Escape loop if it takes longer than 30ms
-    // }
+    num_loops++;
   }
-  uint16_t time_elapsed = TCNT1;
-  time_elapsed /= USECCYCLES; // Convert time to usecs
-  return time_elapsed / 58;
+  return num_loops / 58;
 }

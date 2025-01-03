@@ -1,7 +1,6 @@
 #include "func.h"
 #include "pindefines.h"
 #include "serial.h"
-#include <stdlib.h>
 #include <util/delay.h>
 
 AVAILABLE isLcdBusy() {
