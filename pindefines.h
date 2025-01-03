@@ -46,4 +46,4 @@
 #define TRIG PORTB0
 #define ECHO PORTB1
 #define TRIGPORT PORTB
-#define ECHOPORT PORTB
+#define ECHOPORT PINB

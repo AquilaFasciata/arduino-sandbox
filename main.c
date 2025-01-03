@@ -69,7 +69,7 @@ int main() {
     }
 
     int distance = sensorGetDistance();
-    char number[10] = {'\0'};
+    char number[1000] = {'\0'};
     itoa(distance, number, 10);
     usart_print("Distance: ");
     usart_print(number);
