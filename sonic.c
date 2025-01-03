@@ -18,14 +18,13 @@ void sensorInit() {
 
 // Must wait 10mS between distance checks
 int sensorGetDistance() {
+  while ((ECHOPORT & (1 << ECHO)))
+    ;
   TRIGPORT |= _BV(TRIG);
 
   _delay_us(10);
-  int num_loops = 0;
 
   TRIGPORT &= ~(_BV(TRIG));
-  while ((ECHOPORT & (1 << ECHO)))
-    ;
   while (!(ECHOPORT & (1 << ECHO)))
     ;
   TCNT1 = 0;
