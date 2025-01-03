@@ -5,6 +5,7 @@
 #include <avr/io.h>
 #include <avr/sfr_defs.h>
 #include <stdlib.h>
+#include <string.h>
 #include <util/delay.h>
 
 #define BLINK_DELAY_MS 1000
@@ -43,6 +44,7 @@ int main() {
   // busyWait();
 
   DDRB |= 0b100000; // PORTB5
+  lcdPrintn("Test", strlen("test"));
   while (1) {
     unsigned char serial_input;
     while ((UCSR0A & (1 << RXC0))) {
@@ -69,7 +71,7 @@ int main() {
     }
 
     int distance = sensorGetDistance();
-    char number[1000] = {'\0'};
+    char number[10] = {'\0'};
     itoa(distance, number, 10);
     usart_print("Distance: ");
     usart_print(number);

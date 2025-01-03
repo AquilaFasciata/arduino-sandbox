@@ -13,3 +13,4 @@ void ledBlink();
 void lcdClear();
 void lcdShiftCursor(int positions, CURSORDIR direction);
 void lcdPrintn(char *str, size_t num);
+void lcdPrint(char *str);

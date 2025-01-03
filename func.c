@@ -2,6 +2,7 @@
 #include "pindefines.h"
 #include "serial.h"
 #include <stddef.h>
+#include <string.h>
 #include <util/delay.h>
 
 static AVAILABLE isLcdBusy() {
@@ -188,3 +189,5 @@ void lcdPrintn(char *str, size_t num) {
     busyWait();
   }
 }
+
+void lcdPrint(char *str) { lcdPrintn(str, strlen(str)); }
