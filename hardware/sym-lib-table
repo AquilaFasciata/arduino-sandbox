@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "crystal-osc")(type "KiCad")(uri "${KIPRJMOD}/crystal-osc.kicad_sym")(options "")(descr ""))
+)
